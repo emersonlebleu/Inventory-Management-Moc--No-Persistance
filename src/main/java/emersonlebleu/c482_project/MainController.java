@@ -69,4 +69,12 @@ public class MainController implements Initializable {
 
         stage.show();
     }
+
+    public void delete_product(ActionEvent actionEvent) {
+        System.out.println("Delete Product");
+    }
+
+    public void delete_part(ActionEvent actionEvent) {
+        System.out.println("Delete Part");
+    }
 }
