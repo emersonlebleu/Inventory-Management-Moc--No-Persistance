@@ -16,17 +16,16 @@ public class IMSApplication extends Application {
         FXMLLoader addProductLoader = new FXMLLoader(IMSApplication.class.getResource("add_product_view.fxml"));
         FXMLLoader modifyProductLoader = new FXMLLoader(IMSApplication.class.getResource("modify_product_view.fxml"));
 
-        stage.setTitle("Inventory Management System");
+        stage.setTitle("IMS: Main");
 
         Scene mainScene = new Scene(mainLoader.load(), 895.0 , 395.0);
-        Scene addPartScene = new Scene(addPartLoader.load(), 895.0 , 395.0);
+        Scene addPartScene = new Scene(addPartLoader.load(), 488.0 , 463.0);
         Scene modifyPartScene = new Scene(modifyPartLoader.load(), 895.0 , 395.0);
         Scene addProductScene = new Scene(addProductLoader.load(), 895.0 , 395.0);
         Scene modifyProductScene = new Scene(modifyProductLoader.load(), 895.0 , 395.0);
 
         stage.setScene(mainScene);
         stage.show();
-
     }
 
     public static void main(String[] args) {

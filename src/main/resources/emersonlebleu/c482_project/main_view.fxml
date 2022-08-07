@@ -17,9 +17,9 @@
                   <TableColumn prefWidth="124.0" text="Price/Cost per Unit" />
               </columns>
             </TableView>
-            <Button layoutX="230.0" layoutY="185.0" mnemonicParsing="false" text="Add" />
-            <Button layoutX="279.0" layoutY="185.0" mnemonicParsing="false" text="Modify" />
-            <Button layoutX="342.0" layoutY="185.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="addPartBtn" layoutX="230.0" layoutY="185.0" mnemonicParsing="false" onAction="#to_add_part" text="Add" />
+            <Button fx:id="modifyPartBtn" layoutX="279.0" layoutY="185.0" mnemonicParsing="false" onAction="#to_modify_part" text="Modify" />
+            <Button fx:id="deletePartBtn" layoutX="342.0" layoutY="185.0" mnemonicParsing="false" text="Delete" />
             <TextField layoutX="230.0" layoutY="14.0" prefHeight="25.0" prefWidth="163.0" promptText="Search by Part ID or Name" />
             <Label layoutX="15.0" layoutY="18.0" prefHeight="17.0" prefWidth="38.0" text="Parts">
                <font>

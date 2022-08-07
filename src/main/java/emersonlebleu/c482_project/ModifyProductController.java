@@ -8,6 +8,5 @@ import java.util.ResourceBundle;
 public class ModifyProductController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Modify Product Initialized");
     }
 }
