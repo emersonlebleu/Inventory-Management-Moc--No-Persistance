@@ -47,4 +47,26 @@ public class MainController implements Initializable {
 
         stage.show();
     }
+
+    public void to_add_product(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("add_product_view.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+        Scene scene = new Scene(root, 949.0 , 603.0);
+        stage.setTitle("IMS: Add Product");
+        stage.setScene(scene);
+
+        stage.show();
+    }
+
+    public void to_modify_product(ActionEvent actionEvent) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("modify_product_view.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+        Scene scene = new Scene(root, 949.0 , 603.0);
+        stage.setTitle("IMS: Modify Product");
+        stage.setScene(scene);
+
+        stage.show();
+    }
 }

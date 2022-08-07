@@ -41,8 +41,8 @@
       </TableView>
       <Button layoutX="676.0" layoutY="274.0" mnemonicParsing="false" text="Add" />
       <Button layoutX="725.0" layoutY="515.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="Remove Associated Part" />
-      <Button layoutX="725.0" layoutY="550.0" mnemonicParsing="false" text="Save" />
-      <Button layoutX="781.0" layoutY="550.0" mnemonicParsing="false" text="Cancel" />
+      <Button layoutX="725.0" layoutY="550.0" mnemonicParsing="false" onAction="#on_save" text="Save" />
+      <Button layoutX="781.0" layoutY="550.0" mnemonicParsing="false" onAction="#on_cancel" text="Cancel" />
       <TextField layoutX="725.0" layoutY="33.0" prefHeight="25.0" prefWidth="164.0" promptText="Search by Part ID or Name" />
     </children>
 </AnchorPane>
