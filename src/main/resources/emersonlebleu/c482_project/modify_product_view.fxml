@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="603.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="emersonlebleu.c482_project.ModifyProductController">
     <children>
-        <Label layoutX="45.0" layoutY="42.0" prefHeight="17.0" prefWidth="77.0" text="Add Product">
+        <Label layoutX="45.0" layoutY="42.0" prefHeight="17.0" prefWidth="77.0" text="Modify Product">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
