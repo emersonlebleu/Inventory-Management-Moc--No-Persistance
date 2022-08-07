@@ -11,7 +11,7 @@ package emersonlebleu.c482_project;
 public class InHouse extends Part{
     private int machineid;
 
-    public InHouse(int id, String name, Double price, int stock, int min, int max, int machineid){
+    public InHouse(int id, String name, double price, int stock, int min, int max, int machineid){
         super(id, name, price, stock, min, max);
         this.machineid = machineid;
     }
