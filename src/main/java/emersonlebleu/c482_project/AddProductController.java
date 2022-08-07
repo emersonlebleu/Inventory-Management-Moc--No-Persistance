@@ -38,4 +38,12 @@ public class AddProductController implements Initializable {
 
         stage.show();
     }
+
+    public void add_part(ActionEvent actionEvent) {
+        System.out.println("Add part to product");
+    }
+
+    public void remove_part(ActionEvent actionEvent) {
+        System.out.println("Remove part from product");
+    }
 }
