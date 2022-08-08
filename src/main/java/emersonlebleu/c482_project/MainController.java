@@ -1,5 +1,6 @@
 package emersonlebleu.c482_project;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,7 @@ public class MainController implements Initializable {
     }
 
     public void exitbuttonclick(ActionEvent actionEvent) {
-        System.out.println("Exit Button Clicked");
+        Platform.exit();
     }
 
     public void to_add_part(ActionEvent actionEvent) throws IOException {
