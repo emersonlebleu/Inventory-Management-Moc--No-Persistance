@@ -10,6 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,9 +21,60 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     public Button to_addPart;
+    public TableView partsTable;
+    public TableColumn partIdColumn;
+    public TableColumn partNameColumn;
+    public TableColumn partInventoryColumn;
+    public TableColumn partPriceColumn;
+
+    public TableView productsTable;
+    public TableColumn productIdColumn;
+    public TableColumn productNameColumn;
+    public TableColumn productInventoryColumn;
+    public TableColumn productPriceColumn;
+
+    private static boolean fisrtLoad = true;
+    private void initalData(){
+        if (!fisrtLoad){
+            return;
+        }
+        Outsourced one = new Outsourced(IdCreator.generate(), "Bolt-Small", .16, 500, 1, 100000, "InterCom Inc.");
+        Inventory.addPart(one);
+        InHouse two = new InHouse(IdCreator.generate(), "Washer-Medium", .16, 1000, 1, 100000, 2043);
+        Inventory.addPart(two);
+        Outsourced three = new Outsourced(IdCreator.generate(), "Nut", .16, 600, 1, 100000, "InterCom Inc.");
+        Inventory.addPart(three);
+        Outsourced four = new Outsourced(IdCreator.generate(), "Screw-Metal", .10, 1000, 1, 100000, "Screws & More");
+        Inventory.addPart(four);
+        Outsourced five = new Outsourced(IdCreator.generate(), "Screw-Plastic", .10, 1000, 1, 100000, "Screws & More");
+        Inventory.addPart(five);
+        InHouse six = new InHouse(IdCreator.generate(), "Bolt-Medium", .30, 400, 1, 100000, 2043);
+        Inventory.addPart(six);
+
+        Product productOne = new Product(IdCreator.generate(), "BWN Combo Small", 1.50, 300, 1, 100000);
+        Inventory.addProduct(productOne);
+        Product productTwo = new Product(IdCreator.generate(), "BWN Combo Medium", 3.15, 200, 1, 100000);
+        Inventory.addProduct(productTwo);
+        fisrtLoad = false;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initalData();
+
+        partsTable.setItems(Inventory.getAllParts());
+
+        partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        productsTable.setItems(Inventory.getAllProducts());
+
+        productIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
     public void exitbuttonclick(ActionEvent actionEvent) {
