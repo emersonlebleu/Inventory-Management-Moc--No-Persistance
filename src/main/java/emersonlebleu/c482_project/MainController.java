@@ -206,7 +206,9 @@ public class MainController implements Initializable {
             subList = searchPartsString(searchCriteria);
 
             if (subList.size() == 0) {
-                subList = searchPartsId(Integer.parseInt(searchCriteria));
+                try {
+                    subList = searchPartsId(Integer.parseInt(searchCriteria));
+                } catch (Exception e) { subList = FXCollections.observableArrayList(); }
             }
         } else {
             subList = Inventory.getAllParts();
@@ -224,7 +226,9 @@ public class MainController implements Initializable {
             subList = searchProductsString(searchCriteria);
 
             if (subList.size() == 0) {
-                subList = searchProductsId(Integer.parseInt(searchCriteria));
+                try {
+                    subList = searchProductsId(Integer.parseInt(searchCriteria));
+                } catch (Exception e) { subList = FXCollections.observableArrayList(); }
             }
         } else {
             subList = Inventory.getAllProducts();
