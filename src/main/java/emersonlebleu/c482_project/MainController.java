@@ -31,6 +31,7 @@ public class MainController implements Initializable {
     public TableColumn productPriceColumn;
     private static boolean fisrtLoad = true;
     public TextField partSearchBar;
+    public TextField productSearchBar;
 
     private void initalData(){
         if (!fisrtLoad){
@@ -97,7 +98,6 @@ public class MainController implements Initializable {
         }
         return subList;
     }
-
     public static ObservableList<Part> searchPartsId(int sCriteria){
         ObservableList<Part> subList = FXCollections.observableArrayList();
         ObservableList<Part> mainList = Inventory.getAllParts();
@@ -105,6 +105,29 @@ public class MainController implements Initializable {
         for (Part part: mainList) {
             if (part.getId() == sCriteria){
                 subList.add(part);
+            }
+        }
+        return subList;
+    }
+
+    public static ObservableList<Product> searchProductsString(String sCriteria){
+        ObservableList<Product> subList = FXCollections.observableArrayList();
+        ObservableList<Product> mainList = Inventory.getAllProducts();
+
+        for (Product product: mainList) {
+            if (product.getName().contains(sCriteria)){
+                subList.add(product);
+            }
+        }
+        return subList;
+    }
+    public static ObservableList<Product> searchProductsId(int sCriteria){
+        ObservableList<Product> subList = FXCollections.observableArrayList();
+        ObservableList<Product> mainList = Inventory.getAllProducts();
+
+        for (Product product: mainList) {
+            if (product.getId() == sCriteria){
+                subList.add(product);
             }
         }
         return subList;
@@ -175,7 +198,7 @@ public class MainController implements Initializable {
         Inventory.deletePart(selectedPart);
     }
 
-    public void look_up(ActionEvent actionEvent) {
+    public void look_up_part(ActionEvent actionEvent) {
         String searchCriteria = partSearchBar.getText();
         ObservableList subList = FXCollections.observableArrayList();
 
@@ -191,5 +214,23 @@ public class MainController implements Initializable {
 
         partsTable.setItems(subList);
         partSearchBar.setText("");
+    }
+
+    public void look_up_product(ActionEvent actionEvent) {
+        String searchCriteria = productSearchBar.getText();
+        ObservableList subList = FXCollections.observableArrayList();
+
+        if (searchCriteria != "") {
+            subList = searchProductsString(searchCriteria);
+
+            if (subList.size() == 0) {
+                subList = searchProductsId(Integer.parseInt(searchCriteria));
+            }
+        } else {
+            subList = Inventory.getAllProducts();
+        }
+
+        productsTable.setItems(subList);
+        productSearchBar.setText("");
     }
 }

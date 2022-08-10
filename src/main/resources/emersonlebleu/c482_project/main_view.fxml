@@ -20,7 +20,7 @@
             <Button fx:id="addPartBtn" layoutX="230.0" layoutY="185.0" mnemonicParsing="false" onAction="#to_add_part" text="Add" />
             <Button fx:id="modifyPartBtn" layoutX="279.0" layoutY="185.0" mnemonicParsing="false" onAction="#to_modify_part" text="Modify" />
             <Button fx:id="deletePartBtn" layoutX="342.0" layoutY="185.0" mnemonicParsing="false" onAction="#delete_part" text="Delete" />
-            <TextField fx:id="partSearchBar" layoutX="230.0" layoutY="14.0" prefHeight="25.0" prefWidth="163.0" onAction="#look_up" promptText="Search by Part ID or Name" />
+            <TextField fx:id="partSearchBar" layoutX="230.0" layoutY="14.0" prefHeight="25.0" prefWidth="163.0" onAction="#look_up_part" promptText="Search by Part ID or Name" />
             <Label layoutX="15.0" layoutY="18.0" prefHeight="17.0" prefWidth="38.0" text="Parts">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -41,7 +41,7 @@
             <Button fx:id="addProductBtn" layoutX="230.0" layoutY="185.0" mnemonicParsing="false" onAction="#to_add_product" text="Add" />
             <Button fx:id="modifyProductBtn" layoutX="279.0" layoutY="185.0" mnemonicParsing="false" onAction="#to_modify_product" text="Modify" />
             <Button fx:id="deleteProductBtn" layoutX="342.0" layoutY="185.0" mnemonicParsing="false" onAction="#delete_product" text="Delete" />
-            <TextField layoutX="217.0" layoutY="15.0" prefHeight="25.0" prefWidth="176.0" promptText="Search by Product ID or Name" />
+            <TextField fx:id="productSearchBar" layoutX="217.0" layoutY="15.0" prefHeight="25.0" prefWidth="176.0" onAction="#look_up_product" promptText="Search by Product ID or Name" />
             <Label layoutX="15.0" layoutY="19.0" prefHeight="17.0" prefWidth="54.0" text="Products">
                <font>
                   <Font name="System Bold" size="12.0" />
