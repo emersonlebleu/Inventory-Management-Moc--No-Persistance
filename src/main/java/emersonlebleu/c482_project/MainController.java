@@ -81,6 +81,11 @@ public class MainController implements Initializable {
         Platform.exit();
     }
 
+    private static Part selectedPart = null;
+    public static Part getSelectedPart(){
+        return  selectedPart;
+    }
+
     public void to_add_part(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("add_part_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -93,6 +98,8 @@ public class MainController implements Initializable {
     }
 
     public void to_modify_part(ActionEvent actionEvent) throws IOException{
+        selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
+
         Parent root = FXMLLoader.load(getClass().getResource("modify_part_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
@@ -126,10 +133,18 @@ public class MainController implements Initializable {
     }
 
     public void delete_product(ActionEvent actionEvent) {
-        System.out.println("Delete Product");
+        Product selectedProduct = (Product) productsTable.getSelectionModel().getSelectedItem();
+        if (selectedProduct == null) {
+            return;
+        }
+        Inventory.deleteProduct(selectedProduct);
     }
 
     public void delete_part(ActionEvent actionEvent) {
-        System.out.println("Delete Part");
+        Part selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
+        if (selectedPart == null) {
+            return;
+        }
+        Inventory.deletePart(selectedPart);
     }
 }
