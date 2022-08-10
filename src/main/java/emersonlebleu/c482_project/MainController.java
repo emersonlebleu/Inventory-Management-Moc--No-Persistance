@@ -87,6 +87,11 @@ public class MainController implements Initializable {
         return  selectedPart;
     }
 
+    private static Product selectedProduct = null;
+    public static Product getSelectedProduct(){
+        return  selectedProduct;
+    }
+
     public void to_add_part(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("add_part_view.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
