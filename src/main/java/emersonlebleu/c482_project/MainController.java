@@ -88,27 +88,30 @@ public class MainController implements Initializable {
     }
 
     public void to_add_part(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("add_part_view.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("add_part_view.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
-        Scene scene = new Scene(root, 488.0 , 463.0);
-        stage.setTitle("IMS: Add Part");
-        stage.setScene(scene);
+            Scene scene = new Scene(root, 488.0 , 463.0);
+            stage.setTitle("IMS: Add Part");
+            stage.setScene(scene);
 
-        stage.show();
+            stage.show();
     }
 
     public void to_modify_part(ActionEvent actionEvent) throws IOException{
         selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("modify_part_view.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
-        Parent root = FXMLLoader.load(getClass().getResource("modify_part_view.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 488.0 , 463.0);
+            stage.setTitle("IMS: Modify Part");
+            stage.setScene(scene);
 
-        Scene scene = new Scene(root, 488.0 , 463.0);
-        stage.setTitle("IMS: Modify Part");
-        stage.setScene(scene);
-
-        stage.show();
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("Error: Sorry, No Part Selected. Please select a part and try again.");
+        }
     }
 
     public void to_add_product(ActionEvent actionEvent) throws IOException {
