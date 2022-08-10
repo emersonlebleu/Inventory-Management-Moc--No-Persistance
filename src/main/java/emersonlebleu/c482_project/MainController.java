@@ -29,9 +29,9 @@ public class MainController implements Initializable {
     public TableColumn productNameColumn;
     public TableColumn productInventoryColumn;
     public TableColumn productPriceColumn;
-    private static boolean fisrtLoad = true;
     public TextField partSearchBar;
     public TextField productSearchBar;
+    private static boolean fisrtLoad = true;
 
     public class IdCreator {
         static int currId = 0;
