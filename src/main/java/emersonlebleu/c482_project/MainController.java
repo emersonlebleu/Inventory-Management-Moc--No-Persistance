@@ -1,6 +1,7 @@
 package emersonlebleu.c482_project;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,10 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -21,20 +19,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    public Button to_addPart;
     public TableView partsTable;
     public TableColumn partIdColumn;
     public TableColumn partNameColumn;
     public TableColumn partInventoryColumn;
     public TableColumn partPriceColumn;
-
     public TableView productsTable;
     public TableColumn productIdColumn;
     public TableColumn productNameColumn;
     public TableColumn productInventoryColumn;
     public TableColumn productPriceColumn;
-
     private static boolean fisrtLoad = true;
+    public TextField partSearchBar;
+
     private void initalData(){
         if (!fisrtLoad){
             return;
@@ -83,13 +80,34 @@ public class MainController implements Initializable {
     }
 
     private static Part selectedPart = null;
-    public static Part getSelectedPart(){
-        return  selectedPart;
-    }
-
+    public static Part getSelectedPart(){ return  selectedPart; }
     private static Product selectedProduct = null;
     public static Product getSelectedProduct(){
         return  selectedProduct;
+    }
+
+    public static ObservableList<Part> searchPartsString(String sCriteria){
+        ObservableList<Part> subList = FXCollections.observableArrayList();
+        ObservableList<Part> mainList = Inventory.getAllParts();
+
+        for (Part part: mainList) {
+            if (part.getName().contains(sCriteria)){
+                subList.add(part);
+            }
+        }
+        return subList;
+    }
+
+    public static ObservableList<Part> searchPartsId(int sCriteria){
+        ObservableList<Part> subList = FXCollections.observableArrayList();
+        ObservableList<Part> mainList = Inventory.getAllParts();
+
+        for (Part part: mainList) {
+            if (part.getId() == sCriteria){
+                subList.add(part);
+            }
+        }
+        return subList;
     }
 
     public void to_add_part(ActionEvent actionEvent) throws IOException {
@@ -155,5 +173,23 @@ public class MainController implements Initializable {
             return;
         }
         Inventory.deletePart(selectedPart);
+    }
+
+    public void look_up(ActionEvent actionEvent) {
+        String searchCriteria = partSearchBar.getText();
+        ObservableList subList = FXCollections.observableArrayList();
+
+        if (searchCriteria != "") {
+            subList = searchPartsString(searchCriteria);
+
+            if (subList.size() == 0) {
+                subList = searchPartsId(Integer.parseInt(searchCriteria));
+            }
+        } else {
+            subList = Inventory.getAllParts();
+        }
+
+        partsTable.setItems(subList);
+        partSearchBar.setText("");
     }
 }
