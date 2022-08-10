@@ -62,22 +62,31 @@ public class ModifyPartController implements Initializable {
         String newCompany = toggleField.getText();
 
     }
-
-    public void on_save(ActionEvent actionEvent) throws IOException {
+    private void set_fields(){
         int newId = Integer.parseInt(idField.getText());
         String newName = nameField.getText();
+        selectedPart.setName(newName);
         int newInv = Integer.parseInt(invField.getText());
+        selectedPart.setStock(newInv);
         Double newPrice = Double.parseDouble(priceField.getText());
+        selectedPart.setPrice(newPrice);
         int newMax = Integer.parseInt(maxField.getText());
+        selectedPart.setMax(newMax);
         int newMin = Integer.parseInt(minField.getText());
+        selectedPart.setMin(newMin);
+    }
 
-        //Checks if outsourced or inhouse
+    public void on_save(ActionEvent actionEvent) throws IOException {
+
+        //Checks if a part has changed from outsourced or in house and performs re-assignment
         if (selectedPart instanceof Outsourced && add_part_toggle.getSelectedToggle() == outsourced_radio) {
+            set_fields();
             String newCompany = toggleField.getText();
             ((Outsourced) selectedPart).setCompanyName(newCompany);
         } else if (selectedPart instanceof InHouse && add_part_toggle.getSelectedToggle() == in_house_radio) {
-            String newPtNum = toggleField.getText();
-            ((InHouse) selectedPart).setMachineid(Integer.parseInt(newPtNum));
+            set_fields();
+            int newMachineId = Integer.parseInt(toggleField.getText());
+            ((InHouse) selectedPart).setMachineid(newMachineId);
         }
 
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
