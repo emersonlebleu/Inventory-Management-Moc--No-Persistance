@@ -53,13 +53,33 @@ public class ModifyPartController implements Initializable {
 
     public void on_in_house(ActionEvent actionEvent) {
         machine_company.setText("Machine ID");
+        int newMachineId = Integer.parseInt(toggleField.getText());
+
     }
 
     public void on_outsourced(ActionEvent actionEvent) {
         machine_company.setText("Company Name");
+        String newCompany = toggleField.getText();
+
     }
 
     public void on_save(ActionEvent actionEvent) throws IOException {
+        int newId = Integer.parseInt(idField.getText());
+        String newName = nameField.getText();
+        int newInv = Integer.parseInt(invField.getText());
+        Double newPrice = Double.parseDouble(priceField.getText());
+        int newMax = Integer.parseInt(maxField.getText());
+        int newMin = Integer.parseInt(minField.getText());
+
+        //Checks if outsourced or inhouse
+        if (selectedPart instanceof Outsourced && add_part_toggle.getSelectedToggle() == outsourced_radio) {
+            String newCompany = toggleField.getText();
+            ((Outsourced) selectedPart).setCompanyName(newCompany);
+        } else if (selectedPart instanceof InHouse && add_part_toggle.getSelectedToggle() == in_house_radio) {
+            String newPtNum = toggleField.getText();
+            ((InHouse) selectedPart).setMachineid(Integer.parseInt(newPtNum));
+        }
+
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
