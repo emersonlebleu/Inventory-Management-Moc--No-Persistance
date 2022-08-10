@@ -81,7 +81,10 @@ public class AddProductController implements Initializable {
     }
 
     public void remove_part(ActionEvent actionEvent) {
-        System.out.println("Remove part from product");
+        selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
+
+        thisProductParts.remove(selectedPart);
+        thisPartTable.setItems(thisProductParts);
     }
 
     public void searchParts(ActionEvent actionEvent) {
