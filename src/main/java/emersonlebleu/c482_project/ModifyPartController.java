@@ -36,9 +36,11 @@ public class ModifyPartController implements Initializable {
         if (selectedPart instanceof Outsourced ) {
             add_part_toggle.selectToggle(outsourced_radio);
             machine_company.setText("Company Name");
+            toggleField.setText(((Outsourced) selectedPart).getCompanyName());
         } else if (selectedPart instanceof InHouse) {
             add_part_toggle.selectToggle(in_house_radio);
             machine_company.setText("Machine ID");
+            toggleField.setText(Integer.toString(((InHouse) selectedPart).getMachineid()));
         }
 
         idField.setText(Integer.toString(selectedPart.getId()));
