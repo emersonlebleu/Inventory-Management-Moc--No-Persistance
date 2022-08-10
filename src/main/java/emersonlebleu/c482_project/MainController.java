@@ -33,6 +33,14 @@ public class MainController implements Initializable {
     public TextField partSearchBar;
     public TextField productSearchBar;
 
+    public class IdCreator {
+        static int currId = 0;
+        public static int generate() {
+            currId++;
+            return currId;
+        }
+    }
+
     private void initalData(){
         if (!fisrtLoad){
             return;
