@@ -40,6 +40,8 @@ public class ModifyPartController implements Initializable {
             add_part_toggle.selectToggle(in_house_radio);
             machine_company.setText("Machine ID");
         }
+
+        idField.setText(Integer.toString(selectedPart.getId()));
     }
 
     public void on_in_house(ActionEvent actionEvent) {
