@@ -58,7 +58,7 @@ public class ModifyPartController implements Initializable {
     public void on_outsourced(ActionEvent actionEvent) {
         machine_company.setText("Company Name");
     }
-    private void set_fields(Part part){
+    public void set_fields(Part part){
         int newId = Integer.parseInt(idField.getText());
         part.setId(newId);
         String newName = nameField.getText();
