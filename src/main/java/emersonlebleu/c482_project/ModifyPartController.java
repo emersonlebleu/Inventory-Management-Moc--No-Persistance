@@ -42,6 +42,7 @@ public class ModifyPartController implements Initializable {
         }
 
         idField.setText(Integer.toString(selectedPart.getId()));
+        nameField.setText(selectedPart.getName());
     }
 
     public void on_in_house(ActionEvent actionEvent) {
