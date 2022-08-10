@@ -45,6 +45,8 @@ public class ModifyPartController implements Initializable {
         nameField.setText(selectedPart.getName());
         invField.setText(Integer.toString(selectedPart.getStock()));
         priceField.setText(Double.toString(selectedPart.getPrice()));
+        maxField.setText(Integer.toString(selectedPart.getMax()));
+        minField.setText(Integer.toString(selectedPart.getMin()));
     }
 
     public void on_in_house(ActionEvent actionEvent) {
