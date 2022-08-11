@@ -17,7 +17,7 @@ import java.net.URL;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+ /** Controller class for the add_product_view. */
 public class AddProductController implements Initializable {
     public TableView allPartsTable;
     public TableColumn allPartsIdColumn;
@@ -36,7 +36,11 @@ public class AddProductController implements Initializable {
     public TextField priceField;
     public TextField maxField;
     public TextField minField;
+
+    /** Variable that holds list of parts for current product. */
     private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
+
+    /** Sets up tables with appropriate information. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -55,6 +59,8 @@ public class AddProductController implements Initializable {
         thisPartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
+    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed.
+     * @param product a product to be set */
     public void set_fields(Product product){
         product.setId(MainController.generate());
         String newName = nameField.getText();
@@ -69,9 +75,10 @@ public class AddProductController implements Initializable {
         product.setMin(newMin);
     }
 
+     /** Selected part variable. Used to store the selected part from the allParts and thisPart tables. */
     private static Part selectedPart = null;
-    public static Part getSelectedPart(){ return  selectedPart; }
 
+    /** Saves a new product. Saves the information into a new product, adds product to the inventory, and loads main. */
     public void on_save(ActionEvent actionEvent) throws IOException {
 
         Product newProduct = new Product( 0, "none", 0.00, 0, 0, 0);
@@ -91,6 +98,8 @@ public class AddProductController implements Initializable {
 
         stage.show();
     }
+
+    /** Returns to the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -102,12 +111,14 @@ public class AddProductController implements Initializable {
         stage.show();
     }
 
+    /** Adds part to the table of current product. */
     public void add_part(ActionEvent actionEvent) {
         selectedPart = (Part) allPartsTable.getSelectionModel().getSelectedItem();
 
         thisProductParts.add(selectedPart);
         thisPartTable.setItems(thisProductParts);
     }
+
     /** Removes selected part from product after confirmation. */
     public void remove_part(ActionEvent actionEvent) {
         selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
@@ -129,6 +140,7 @@ public class AddProductController implements Initializable {
         thisPartTable.setItems(thisProductParts);
     }
 
+     /** Searches allParts for matching parts. Searches allParts for parts matching either a substring or ID, stores the matches in a sublist, and sets the table items to this sublist. */
     public void searchParts(ActionEvent actionEvent) {
         String searchCriteria = partSearchBar.getText();
         ObservableList subList = FXCollections.observableArrayList();
