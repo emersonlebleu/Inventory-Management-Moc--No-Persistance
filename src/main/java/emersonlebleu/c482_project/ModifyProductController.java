@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Controller class for the modify_product_view. */
 public class ModifyProductController implements Initializable {
     public TableView allPartsTable;
     public TableColumn allPartsIdColumn;
@@ -36,9 +37,16 @@ public class ModifyProductController implements Initializable {
     public TextField maxField;
     public TextField minField;
 
+    /** Selected product variable. Used to store the product being modified. */
     private Product selectedProduct = null;
+
+    /** Selected part variable. Used to store the selected part from the allParts and thisPart tables. */
     private static Part selectedPart = null;
+
+    /** Observable list of parts. Used to store the current product's list of parts. */
     private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
+
+    /** Sets up the fields and tables with appropriate information. Stores the product selected on main view into variable for this view populates the fields, and the tables with information. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedProduct = MainController.getSelectedProduct();
@@ -65,7 +73,9 @@ public class ModifyProductController implements Initializable {
         thisPartInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         thisPartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
-    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed. */
+
+    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed.
+     * @param product a product to be set */
     public void set_fields(Product product){
         int idNum = Integer.parseInt(idField.getText());
         product.setId(idNum);
@@ -81,6 +91,7 @@ public class ModifyProductController implements Initializable {
         product.setMin(newMin);
     }
 
+    /** Saves the information into selectedProduct and loads main. */
     public void on_save(ActionEvent actionEvent) throws IOException {
         set_fields(selectedProduct);
 
@@ -94,6 +105,7 @@ public class ModifyProductController implements Initializable {
         stage.show();
     }
 
+    /** Returns to the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -105,6 +117,7 @@ public class ModifyProductController implements Initializable {
         stage.show();
     }
 
+    /** Adds part to the table of current product. */
     public void add_part(ActionEvent actionEvent) {
         selectedPart = (Part) allPartsTable.getSelectionModel().getSelectedItem();
 
@@ -112,6 +125,7 @@ public class ModifyProductController implements Initializable {
         thisPartTable.setItems(thisProductParts);
     }
 
+    /** Removes part from the current product parts table. Removes a part from the current parts, asks to confirm action, and reloads the current product parts table. */
     public void remove_part(ActionEvent actionEvent) {
         selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
         //--------------Remove Confirmation Box----------------------//
@@ -132,6 +146,7 @@ public class ModifyProductController implements Initializable {
         thisPartTable.setItems(thisProductParts);
     }
 
+    /** Searches allParts for matching parts. Searches allParts for parts matching either a substring or ID, stores the matches in a sublist, and sets the table items to this sublist. */
     public void searchParts(ActionEvent actionEvent) {
         String searchCriteria = partSearchBar.getText();
         ObservableList subList = FXCollections.observableArrayList();
