@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Controller class for the modify_part_view. */
 public class ModifyPartController implements Initializable {
     public ToggleGroup add_part_toggle;
     public TextField idField;
@@ -27,7 +28,11 @@ public class ModifyPartController implements Initializable {
     public RadioButton in_house_radio;
     public RadioButton outsourced_radio;
     public Label machine_company;
+
+    /** Creates a selected part instance. Will be loaded with data from the main controller selectedPart. */
     private Part selectedPart = null;
+
+    /** Sets fields to values from the main controller's selectedPart. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -51,13 +56,16 @@ public class ModifyPartController implements Initializable {
         minField.setText(Integer.toString(selectedPart.getMin()));
     }
 
+    /** Sets text of the toggle field to machine ID. */
     public void on_in_house(ActionEvent actionEvent) {
         machine_company.setText("Machine ID");
     }
-
+    /** Sets text of the toggle field to company name */
     public void on_outsourced(ActionEvent actionEvent) {
         machine_company.setText("Company Name");
     }
+
+    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed. */
     public void set_fields(Part part){
         int newId = Integer.parseInt(idField.getText());
         part.setId(newId);
@@ -72,9 +80,8 @@ public class ModifyPartController implements Initializable {
         int newMin = Integer.parseInt(minField.getText());
         part.setMin(newMin);
     }
-
+    /** Updates the selected part with fields from view as data. Stores the appropriate information into the fields of selectedPart depending on which type of part it is and which type of part is now selected, loads the main view. */
     public void on_save(ActionEvent actionEvent) throws IOException {
-
         //Checks if a part has changed from outsourced or in house and performs re-assignment
         if (selectedPart instanceof Outsourced && add_part_toggle.getSelectedToggle() == outsourced_radio) {
             set_fields(selectedPart);
@@ -109,6 +116,7 @@ public class ModifyPartController implements Initializable {
 
         stage.show();
     }
+    /** Returns to the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
