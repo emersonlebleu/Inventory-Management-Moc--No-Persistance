@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Controller class for the add_part_view. */
 public class AddPartController implements Initializable {
     public RadioButton in_house_radio;
     public RadioButton outsourced_radio;
@@ -29,11 +30,12 @@ public class AddPartController implements Initializable {
     public Button save_btn;
     public Button cancel_btn;
 
+    /** Initializer for add part, no additional functionality in this case. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
+    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed. */
     public void set_fields(Part part){
         part.setId(MainController.generate());
         String newName = nameField.getText();
@@ -47,13 +49,16 @@ public class AddPartController implements Initializable {
         int newMin = Integer.parseInt(minField.getText());
         part.setMin(newMin);
     }
-
+    /** Sets text of the toggle field to machine ID. */
     public void on_in_house(ActionEvent actionEvent) {
         machine_company.setText("Machine ID");
     }
+    /** Sets text of the toggle field to company name */
     public void on_outsourced(ActionEvent actionEvent) {
         machine_company.setText("Company Name");
     }
+
+    /** Adds a new part with fields from view as data. Creates a new part, stores the appropriate information into the fields, loads the main view. */
     public void on_save(ActionEvent actionEvent) throws IOException {
     if (add_part_toggle.getSelectedToggle() == outsourced_radio) {
         Outsourced newPart = new Outsourced(0, "none", 0.00, 0, 0, 0, "none");
@@ -77,6 +82,8 @@ public class AddPartController implements Initializable {
 
         stage.show();
     }
+
+    /** Returns to the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
