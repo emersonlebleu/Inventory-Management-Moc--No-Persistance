@@ -38,6 +38,7 @@ public class ModifyProductController implements Initializable {
     public TextField minField;
 
     private Product selectedProduct = null;
+    private static Part selectedPart = null;
     private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,7 +66,24 @@ public class ModifyProductController implements Initializable {
         thisPartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
+    public void set_fields(Product product){
+        int idNum = Integer.parseInt(idField.getText());
+        product.setId(idNum);
+        String newName = nameField.getText();
+        product.setName(newName);
+        int newInv = Integer.parseInt(invField.getText());
+        product.setStock(newInv);
+        Double newPrice = Double.parseDouble(priceField.getText());
+        product.setPrice(newPrice);
+        int newMax = Integer.parseInt(maxField.getText());
+        product.setMax(newMax);
+        int newMin = Integer.parseInt(minField.getText());
+        product.setMin(newMin);
+    }
+
     public void on_save(ActionEvent actionEvent) throws IOException {
+        set_fields(selectedProduct);
+
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
@@ -75,6 +93,7 @@ public class ModifyProductController implements Initializable {
 
         stage.show();
     }
+
     public void on_cancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -87,10 +106,36 @@ public class ModifyProductController implements Initializable {
     }
 
     public void add_part(ActionEvent actionEvent) {
-        System.out.println("Add part to product");
+        selectedPart = (Part) allPartsTable.getSelectionModel().getSelectedItem();
+
+        selectedProduct.addAssociatedPart(selectedPart);
+        thisPartTable.setItems(selectedProduct.getAllAssociatedParts());
     }
 
     public void remove_part(ActionEvent actionEvent) {
-        System.out.println("Remove part from product");
+        selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
+
+        selectedProduct.deleteAssociatedPart(selectedPart);
+        thisPartTable.setItems(selectedProduct.getAllAssociatedParts());
+    }
+
+    public void searchParts(ActionEvent actionEvent) {
+        String searchCriteria = partSearchBar.getText();
+        ObservableList subList = FXCollections.observableArrayList();
+
+        if (searchCriteria != "") {
+            subList = MainController.searchPartsString(searchCriteria);
+
+            if (subList.size() == 0) {
+                try {
+                    subList = MainController.searchPartsId(Integer.parseInt(searchCriteria));
+                } catch (Exception e) { subList = FXCollections.observableArrayList(); }
+            }
+        } else {
+            subList = Inventory.getAllParts();
+        }
+
+        allPartsTable.setItems(subList);
+        partSearchBar.setText("");
     }
 }
