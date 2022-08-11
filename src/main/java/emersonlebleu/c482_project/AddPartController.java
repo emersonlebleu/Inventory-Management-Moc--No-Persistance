@@ -35,7 +35,7 @@ public class AddPartController implements Initializable {
     }
 
     public void set_fields(Part part){
-        part.setId(MainController.IdCreator.generate());
+        part.setId(MainController.generate());
         String newName = nameField.getText();
         part.setName(newName);
         int newInv = Integer.parseInt(invField.getText());

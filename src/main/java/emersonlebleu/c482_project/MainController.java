@@ -13,10 +13,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+/** This is the class for the main controller. This is the starting point view for the application. */
 
 public class MainController implements Initializable {
     public TableView partsTable;
@@ -33,40 +37,48 @@ public class MainController implements Initializable {
     public TextField productSearchBar;
     private static boolean fisrtLoad = true;
 
-    public class IdCreator {
-        static int currId = 0;
-        public static int generate() {
-            currId++;
-            return currId;
-        }
+
+//    public class IdCreator {
+//
+//    }
+
+    static int currId = 0;
+    /** This method is used to generate unique ids.
+     It uses the static variable currId and increments for the life of the program.
+     @return returns int currId */
+    public static int generate() {
+        currId++;
+        return currId;
     }
 
+    /** This method contains default data. While not required it is not prohibited to input data, data is fresh
+     each new startup of the program but only runs on first initialization of main page. */
     private void initalData(){
         if (!fisrtLoad){
             return;
         }
-        Outsourced one = new Outsourced(IdCreator.generate(), "Bolt-Small", .16, 500, 1, 100000, "InterCom Inc.");
+        Outsourced one = new Outsourced(generate(), "Bolt-Small", .16, 500, 1, 100000, "InterCom Inc.");
         Inventory.addPart(one);
-        InHouse two = new InHouse(IdCreator.generate(), "Washer-Medium", .16, 1000, 1, 100000, 2043);
+        InHouse two = new InHouse(generate(), "Washer-Medium", .16, 1000, 1, 100000, 2043);
         Inventory.addPart(two);
-        Outsourced three = new Outsourced(IdCreator.generate(), "Nut", .16, 600, 1, 100000, "InterCom Inc.");
+        Outsourced three = new Outsourced(generate(), "Nut", .16, 600, 1, 100000, "InterCom Inc.");
         Inventory.addPart(three);
-        Outsourced four = new Outsourced(IdCreator.generate(), "Screw-Metal", .10, 1000, 1, 100000, "Screws & More");
+        Outsourced four = new Outsourced(generate(), "Screw-Metal", .10, 1000, 1, 100000, "Screws & More");
         Inventory.addPart(four);
-        Outsourced five = new Outsourced(IdCreator.generate(), "Screw-Plastic", .10, 1000, 1, 100000, "Screws & More");
+        Outsourced five = new Outsourced(generate(), "Screw-Plastic", .10, 1000, 1, 100000, "Screws & More");
         Inventory.addPart(five);
-        InHouse six = new InHouse(IdCreator.generate(), "Bolt-Medium", .30, 400, 1, 100000, 2043);
+        InHouse six = new InHouse(generate(), "Bolt-Medium", .30, 400, 1, 100000, 2043);
         Inventory.addPart(six);
 
-        Product productOne = new Product(IdCreator.generate(), "BWN Combo Small", 1.50, 300, 1, 100000);
+        Product productOne = new Product(generate(), "BWN Combo Small", 1.50, 300, 1, 100000);
         Inventory.addProduct(productOne);
         productOne.addAssociatedPart(one);
         productOne.addAssociatedPart(four);
-        Product productTwo = new Product(IdCreator.generate(), "BWN Combo Medium", 3.15, 200, 1, 100000);
+        Product productTwo = new Product(generate(), "BWN Combo Medium", 3.15, 200, 1, 100000);
         Inventory.addProduct(productTwo);
         fisrtLoad = false;
     }
-
+    /** This is the initialize method of the main controller page. This calls the initial data and fills and formats the table views. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initalData();
@@ -86,6 +98,7 @@ public class MainController implements Initializable {
         productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
+    /** When button clicked the program closes. */
     public void exitbuttonclick(ActionEvent actionEvent) {
         Platform.exit();
     }
@@ -198,21 +211,59 @@ public class MainController implements Initializable {
         }
 
     }
-
+    /** Deletes a product from the inventory if conditions are satisfied. If product has an associated part an error dialog will populate.
+      Has confirmation box, if confirmed product will be deleted. */
     public void delete_product(ActionEvent actionEvent) {
         Product selectedProduct = (Product) productsTable.getSelectionModel().getSelectedItem();
         if (selectedProduct == null) {
             return;
-        }
-        Inventory.deleteProduct(selectedProduct);
-    }
+        } else if (selectedProduct.getAllAssociatedParts().size() != 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Associated Part Delete Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Sorry, this product has an associated part. You cannot delete it.");
 
+            alert.showAndWait();
+        } else {
+            //--------------Delete Confirmation Box----------------------//
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Confirmation");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you'd like to delete this product?");
+            ButtonType buttonTypeYes = new ButtonType("Yes");
+            ButtonType buttonTypeNo = new ButtonType("No");
+
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeYes) {
+                Inventory.deleteProduct(selectedProduct);
+            } else {
+                //Do nothing
+            }
+        }
+    }
+    /** Deletes a part from the inventory. Has confirmation box, if confirmed part will be deleted. */
     public void delete_part(ActionEvent actionEvent) {
         Part selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
         if (selectedPart == null) {
             return;
         }
-        Inventory.deletePart(selectedPart);
+        //--------------Delete Confirmation Box----------------------//
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you'd like to delete this part?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes) {
+            Inventory.deletePart(selectedPart);
+        } else {
+            //Do nothing
+        }
     }
 
     public void look_up_part(ActionEvent actionEvent) {

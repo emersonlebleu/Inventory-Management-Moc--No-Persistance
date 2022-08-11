@@ -8,14 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ModifyProductController implements Initializable {
@@ -58,6 +57,7 @@ public class ModifyProductController implements Initializable {
         allPartsInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         allPartsPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
+        thisProductParts = selectedProduct.getAllAssociatedParts();
         thisPartTable.setItems(selectedProduct.getAllAssociatedParts());
 
         thisPartIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -65,7 +65,7 @@ public class ModifyProductController implements Initializable {
         thisPartInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         thisPartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
-
+    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed. */
     public void set_fields(Product product){
         int idNum = Integer.parseInt(idField.getText());
         product.setId(idNum);
@@ -109,14 +109,27 @@ public class ModifyProductController implements Initializable {
         selectedPart = (Part) allPartsTable.getSelectionModel().getSelectedItem();
 
         selectedProduct.addAssociatedPart(selectedPart);
-        thisPartTable.setItems(selectedProduct.getAllAssociatedParts());
+        thisPartTable.setItems(thisProductParts);
     }
 
     public void remove_part(ActionEvent actionEvent) {
         selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
+        //--------------Remove Confirmation Box----------------------//
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Remove Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you'd like to remove this part you will be removing permanently (you can always add it back though)?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
 
-        selectedProduct.deleteAssociatedPart(selectedPart);
-        thisPartTable.setItems(selectedProduct.getAllAssociatedParts());
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes) {
+            thisProductParts.remove(selectedPart);
+        } else {
+            //Do nothing
+        }
+        thisPartTable.setItems(thisProductParts);
     }
 
     public void searchParts(ActionEvent actionEvent) {

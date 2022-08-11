@@ -8,15 +8,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.AsynchronousServerSocketChannel;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddProductController implements Initializable {
@@ -57,7 +56,7 @@ public class AddProductController implements Initializable {
     }
 
     public void set_fields(Product product){
-        product.setId(MainController.IdCreator.generate());
+        product.setId(MainController.generate());
         String newName = nameField.getText();
         product.setName(newName);
         int newInv = Integer.parseInt(invField.getText());
@@ -109,11 +108,24 @@ public class AddProductController implements Initializable {
         thisProductParts.add(selectedPart);
         thisPartTable.setItems(thisProductParts);
     }
-
+    /** Removes selected part from product after confirmation. */
     public void remove_part(ActionEvent actionEvent) {
         selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
+        //--------------Remove Confirmation Box----------------------//
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Remove Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you'd like to remove this part?");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
 
-        thisProductParts.remove(selectedPart);
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes) {
+            thisProductParts.remove(selectedPart);
+        } else {
+            //Do nothing
+        }
         thisPartTable.setItems(thisProductParts);
     }
 
