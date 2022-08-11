@@ -20,8 +20,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/** This is the class for the main controller. This is the starting point view for the application. */
-
+/** This is the class for the controller for the main_view. This is the starting point view controller for the application. */
 public class MainController implements Initializable {
     public TableView partsTable;
     public TableColumn partIdColumn;
@@ -37,12 +36,9 @@ public class MainController implements Initializable {
     public TextField productSearchBar;
     private static boolean fisrtLoad = true;
 
-
-//    public class IdCreator {
-//
-//    }
-
+    /** Variable that will hold the ongoing "new" id. */
     static int currId = 0;
+
     /** This method is used to generate unique ids.
      It uses the static variable currId and increments for the life of the program.
      @return returns int currId */
@@ -78,6 +74,7 @@ public class MainController implements Initializable {
         Inventory.addProduct(productTwo);
         fisrtLoad = false;
     }
+
     /** This is the initialize method of the main controller page. This calls the initial data and fills and formats the table views. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -103,13 +100,25 @@ public class MainController implements Initializable {
         Platform.exit();
     }
 
+    /** Static variable, a Part that represents a selected part. Used to share a part between views. */
     private static Part selectedPart = null;
+
+    /** Returns the part currently stored as the "selectedPart".
+      @return the selectedPart. */
     public static Part getSelectedPart(){ return  selectedPart; }
+
+    /** Static variable, a Product that represents a selected part. Used to share a product between views. */
     private static Product selectedProduct = null;
+
+    /** Returns the product currently stored as the "selectedProduct".
+     @return the selectedProduct. */
     public static Product getSelectedProduct(){
         return  selectedProduct;
     }
 
+    /** Searches the parts list for a string.
+     * @param sCriteria some string criteria.
+     * @return a sublist of parts matching the criteria. */
     public static ObservableList<Part> searchPartsString(String sCriteria){
         ObservableList<Part> subList = FXCollections.observableArrayList();
         ObservableList<Part> mainList = Inventory.getAllParts();
@@ -121,6 +130,9 @@ public class MainController implements Initializable {
         }
         return subList;
     }
+    /** Searches the parts list for an ID num.
+     * @param sCriteria some int.
+     * @return a sublist of parts matching the id (which should always be only 1 item). */
     public static ObservableList<Part> searchPartsId(int sCriteria){
         ObservableList<Part> subList = FXCollections.observableArrayList();
         ObservableList<Part> mainList = Inventory.getAllParts();
@@ -132,7 +144,9 @@ public class MainController implements Initializable {
         }
         return subList;
     }
-
+    /** Searches the products list for a string.
+     * @param sCriteria some string criteria.
+     * @return a sublist of products matching the criteria. */
     public static ObservableList<Product> searchProductsString(String sCriteria){
         ObservableList<Product> subList = FXCollections.observableArrayList();
         ObservableList<Product> mainList = Inventory.getAllProducts();
@@ -144,6 +158,9 @@ public class MainController implements Initializable {
         }
         return subList;
     }
+    /** Searches the products list for an ID num.
+     * @param sCriteria some int.
+     * @return a sublist of products matching the id (which should always be only 1 item). */
     public static ObservableList<Product> searchProductsId(int sCriteria){
         ObservableList<Product> subList = FXCollections.observableArrayList();
         ObservableList<Product> mainList = Inventory.getAllProducts();
@@ -155,7 +172,7 @@ public class MainController implements Initializable {
         }
         return subList;
     }
-
+    /** Loads the add_part_view. */
     public void to_add_part(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("add_part_view.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -166,7 +183,7 @@ public class MainController implements Initializable {
 
             stage.show();
     }
-
+    /** Loads the modify_part_view. Stores the current selected part in a variable for use in modify view and loads the modify_part_view. */
     public void to_modify_part(ActionEvent actionEvent) throws IOException{
         selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
         try {
@@ -182,7 +199,7 @@ public class MainController implements Initializable {
             System.out.println("Error: Sorry, No Part Selected. Please select a part and try again.");
         }
     }
-
+    /** Loads the add_product_view. */
     public void to_add_product(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("add_product_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -193,7 +210,7 @@ public class MainController implements Initializable {
 
         stage.show();
     }
-
+    /** Opens the modify_product view. Stores the current selected product in a variable for use in modify view and loads the modify_product_view. */
     public void to_modify_product(ActionEvent actionEvent) throws IOException{
         selectedProduct = (Product) productsTable.getSelectionModel().getSelectedItem();
 
@@ -265,7 +282,7 @@ public class MainController implements Initializable {
             //Do nothing
         }
     }
-
+    /** Searches allParts for matching parts. Searches allParts for parts matching either a substring or ID, stores the matches in a sublist, and sets the table items to this sublist. */
     public void look_up_part(ActionEvent actionEvent) {
         String searchCriteria = partSearchBar.getText();
         ObservableList subList = FXCollections.observableArrayList();
@@ -285,7 +302,7 @@ public class MainController implements Initializable {
         partsTable.setItems(subList);
         partSearchBar.setText("");
     }
-
+    /** Searches allProducts for matching products. Searches allProducts for products matching either a substring or ID, stores the matches in a sublist, and sets the table items to this sublist. */
     public void look_up_product(ActionEvent actionEvent) {
         String searchCriteria = productSearchBar.getText();
         ObservableList subList = FXCollections.observableArrayList();
