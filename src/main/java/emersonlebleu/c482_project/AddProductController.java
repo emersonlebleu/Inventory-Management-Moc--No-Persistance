@@ -37,10 +37,9 @@ public class AddProductController implements Initializable {
     public TextField priceField;
     public TextField maxField;
     public TextField minField;
-
+    private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
 
         allPartsTable.setItems(Inventory.getAllParts());
 
@@ -71,7 +70,6 @@ public class AddProductController implements Initializable {
         product.setMin(newMin);
     }
 
-    private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
     private static Part selectedPart = null;
     public static Part getSelectedPart(){ return  selectedPart; }
 

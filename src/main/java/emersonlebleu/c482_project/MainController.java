@@ -60,6 +60,8 @@ public class MainController implements Initializable {
 
         Product productOne = new Product(IdCreator.generate(), "BWN Combo Small", 1.50, 300, 1, 100000);
         Inventory.addProduct(productOne);
+        productOne.addAssociatedPart(one);
+        productOne.addAssociatedPart(four);
         Product productTwo = new Product(IdCreator.generate(), "BWN Combo Medium", 3.15, 200, 1, 100000);
         Inventory.addProduct(productTwo);
         fisrtLoad = false;
@@ -180,14 +182,21 @@ public class MainController implements Initializable {
     }
 
     public void to_modify_product(ActionEvent actionEvent) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("modify_product_view.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        selectedProduct = (Product) productsTable.getSelectionModel().getSelectedItem();
 
-        Scene scene = new Scene(root, 949.0 , 603.0);
-        stage.setTitle("IMS: Modify Product");
-        stage.setScene(scene);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("modify_product_view.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
-        stage.show();
+            Scene scene = new Scene(root, 949.0 , 603.0);
+            stage.setTitle("IMS: Modify Product");
+            stage.setScene(scene);
+
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("Error: Sorry, No Product Selected. Please select a product and try again.");
+        }
+
     }
 
     public void delete_product(ActionEvent actionEvent) {
