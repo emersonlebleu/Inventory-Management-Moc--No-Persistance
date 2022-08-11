@@ -3,7 +3,6 @@ package emersonlebleu.c482_project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 /** This class creates a product instance. */
-
 /** @author Emerson Lebleu */
 public class Product {
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
