@@ -31,6 +31,12 @@ public class AddProductController implements Initializable {
     public TableColumn thisPartInventoryColumn;
     public TableColumn thisPartPriceColumn;
     public TextField partSearchBar;
+    public TextField idField;
+    public TextField nameField;
+    public TextField invField;
+    public TextField priceField;
+    public TextField maxField;
+    public TextField minField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,11 +56,35 @@ public class AddProductController implements Initializable {
         thisPartInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         thisPartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
+
+    public void set_fields(Product product){
+        product.setId(MainController.IdCreator.generate());
+        String newName = nameField.getText();
+        product.setName(newName);
+        int newInv = Integer.parseInt(invField.getText());
+        product.setStock(newInv);
+        Double newPrice = Double.parseDouble(priceField.getText());
+        product.setPrice(newPrice);
+        int newMax = Integer.parseInt(maxField.getText());
+        product.setMax(newMax);
+        int newMin = Integer.parseInt(minField.getText());
+        product.setMin(newMin);
+    }
+
     private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
     private static Part selectedPart = null;
     public static Part getSelectedPart(){ return  selectedPart; }
 
     public void on_save(ActionEvent actionEvent) throws IOException {
+
+        Product newProduct = new Product( 0, "none", 0.00, 0, 0, 0);
+        set_fields(newProduct);
+        for (Part part: thisProductParts) {
+            newProduct.addAssociatedPart(part);
+        }
+
+        Inventory.addProduct(newProduct);
+
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
