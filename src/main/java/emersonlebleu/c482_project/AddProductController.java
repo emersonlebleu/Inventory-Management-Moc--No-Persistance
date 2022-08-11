@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -29,6 +30,7 @@ public class AddProductController implements Initializable {
     public TableColumn thisPartNameColumn;
     public TableColumn thisPartInventoryColumn;
     public TableColumn thisPartPriceColumn;
+    public TextField partSearchBar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,5 +90,22 @@ public class AddProductController implements Initializable {
     }
 
     public void searchParts(ActionEvent actionEvent) {
+        String searchCriteria = partSearchBar.getText();
+        ObservableList subList = FXCollections.observableArrayList();
+
+        if (searchCriteria != "") {
+            subList = MainController.searchPartsString(searchCriteria);
+
+            if (subList.size() == 0) {
+                try {
+                    subList = MainController.searchPartsId(Integer.parseInt(searchCriteria));
+                } catch (Exception e) { subList = FXCollections.observableArrayList(); }
+            }
+        } else {
+            subList = Inventory.getAllParts();
+        }
+
+        allPartsTable.setItems(subList);
+        partSearchBar.setText("");
     }
 }
