@@ -82,34 +82,79 @@ public class ModifyProductController implements Initializable {
     }
 
     /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed.
-     * @param product a product to be set */
-    public void set_fields(Product product){
+     * @param product a product to be set
+     * @return boolean if all successful then true if not false */
+    public boolean set_fields(Product product){
+        boolean pass = true;
+
         int idNum = Integer.parseInt(idField.getText());
         product.setId(idNum);
-        String newName = nameField.getText();
-        product.setName(newName);
-        int newInv = Integer.parseInt(invField.getText());
-        product.setStock(newInv);
-        Double newPrice = Double.parseDouble(priceField.getText());
-        product.setPrice(newPrice);
-        int newMax = Integer.parseInt(maxField.getText());
-        product.setMax(newMax);
-        int newMin = Integer.parseInt(minField.getText());
-        product.setMin(newMin);
+
+        try {
+            String newName = nameField.getText();
+            nameField.setStyle("-fx-text-fill: black;");
+            product.setName(newName);
+        } catch (Exception e) {
+            nameField.setText("Expected: String");
+            nameField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newInv = Integer.parseInt(invField.getText());
+            invField.setStyle("-fx-text-fill: black;");
+            product.setStock(newInv);
+        } catch (Exception e) {
+            invField.setText("Expected: Integer");
+            invField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            Double newPrice = Double.parseDouble(priceField.getText());
+            priceField.setStyle("-fx-text-fill: black;");
+            product.setPrice(newPrice);
+        } catch (Exception e) {
+            priceField.setText("Expected: Double");
+            priceField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newMax = Integer.parseInt(maxField.getText());
+            maxField.setStyle("-fx-text-fill: black;");
+            product.setMax(newMax);
+        } catch (Exception e) {
+            maxField.setText("Expected: Integer");
+            maxField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newMin = Integer.parseInt(minField.getText());
+            minField.setStyle("-fx-text-fill: black;");
+            product.setMin(newMin);
+        } catch (Exception e) {
+            minField.setText("Expected: Integer");
+            minField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+        return pass;
     }
 
     /** Saves the information into selectedProduct and loads main. */
     public void on_save(ActionEvent actionEvent) throws IOException {
         set_fields(selectedProduct);
+        if (set_fields(selectedProduct)) {
+            Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
-        Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 895.0 , 395.0);
+            stage.setTitle("IMS: Main");
+            stage.setScene(scene);
 
-        Scene scene = new Scene(root, 895.0 , 395.0);
-        stage.setTitle("IMS: Main");
-        stage.setScene(scene);
-
-        stage.show();
+            stage.show();
+        }
     }
 
     /** Returns to the main screen. */
