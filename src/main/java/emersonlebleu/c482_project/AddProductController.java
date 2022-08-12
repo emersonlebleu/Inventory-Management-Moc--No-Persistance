@@ -146,11 +146,11 @@ public class AddProductController implements Initializable {
         ObservableList subList = FXCollections.observableArrayList();
 
         if (searchCriteria != "") {
-            subList = MainController.searchPartsString(searchCriteria);
+            subList = Inventory.lookupPart(searchCriteria);
 
             if (subList.size() == 0) {
                 try {
-                    subList = MainController.searchPartsId(Integer.parseInt(searchCriteria));
+                    subList.add(Inventory.lookupPart(Integer.parseInt(searchCriteria)));
                 } catch (Exception e) { subList = FXCollections.observableArrayList(); }
             }
         } else {

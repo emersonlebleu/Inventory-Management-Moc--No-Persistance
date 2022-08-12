@@ -116,62 +116,6 @@ public class MainController implements Initializable {
         return  selectedProduct;
     }
 
-    /** Searches the parts list for a string.
-     * @param sCriteria some string criteria.
-     * @return a sublist of parts matching the criteria. */
-    public static ObservableList<Part> searchPartsString(String sCriteria){
-        ObservableList<Part> subList = FXCollections.observableArrayList();
-        ObservableList<Part> mainList = Inventory.getAllParts();
-
-        for (Part part: mainList) {
-            if (part.getName().contains(sCriteria)){
-                subList.add(part);
-            }
-        }
-        return subList;
-    }
-    /** Searches the parts list for an ID num.
-     * @param sCriteria some int.
-     * @return a sublist of parts matching the id (which should always be only 1 item). */
-    public static ObservableList<Part> searchPartsId(int sCriteria){
-        ObservableList<Part> subList = FXCollections.observableArrayList();
-        ObservableList<Part> mainList = Inventory.getAllParts();
-
-        for (Part part: mainList) {
-            if (part.getId() == sCriteria){
-                subList.add(part);
-            }
-        }
-        return subList;
-    }
-    /** Searches the products list for a string.
-     * @param sCriteria some string criteria.
-     * @return a sublist of products matching the criteria. */
-    public static ObservableList<Product> searchProductsString(String sCriteria){
-        ObservableList<Product> subList = FXCollections.observableArrayList();
-        ObservableList<Product> mainList = Inventory.getAllProducts();
-
-        for (Product product: mainList) {
-            if (product.getName().contains(sCriteria)){
-                subList.add(product);
-            }
-        }
-        return subList;
-    }
-    /** Searches the products list for an ID num.
-     * @param sCriteria some int.
-     * @return a sublist of products matching the id (which should always be only 1 item). */
-    public static ObservableList<Product> searchProductsId(int sCriteria){
-        ObservableList<Product> subList = FXCollections.observableArrayList();
-        ObservableList<Product> mainList = Inventory.getAllProducts();
-
-        for (Product product: mainList) {
-            if (product.getId() == sCriteria){
-                subList.add(product);
-            }
-        }
-        return subList;
-    }
     /** Loads the add_part_view. */
     public void to_add_part(ActionEvent actionEvent) throws IOException {
             Parent root = FXMLLoader.load(getClass().getResource("add_part_view.fxml"));
@@ -288,11 +232,11 @@ public class MainController implements Initializable {
         ObservableList subList = FXCollections.observableArrayList();
 
         if (searchCriteria != "") {
-            subList = searchPartsString(searchCriteria);
+            subList = Inventory.lookupPart(searchCriteria);
 
             if (subList.size() == 0) {
                 try {
-                    subList = searchPartsId(Integer.parseInt(searchCriteria));
+                    subList.add(Inventory.lookupPart(Integer.parseInt(searchCriteria)));
                 } catch (Exception e) { subList = FXCollections.observableArrayList(); }
             }
         } else {
@@ -308,11 +252,11 @@ public class MainController implements Initializable {
         ObservableList subList = FXCollections.observableArrayList();
 
         if (searchCriteria != "") {
-            subList = searchProductsString(searchCriteria);
+            subList = Inventory.lookupProduct(searchCriteria);
 
             if (subList.size() == 0) {
                 try {
-                    subList = searchProductsId(Integer.parseInt(searchCriteria));
+                    subList.add(Inventory.lookupProduct(Integer.parseInt(searchCriteria)));
                 } catch (Exception e) { subList = FXCollections.observableArrayList(); }
             }
         } else {

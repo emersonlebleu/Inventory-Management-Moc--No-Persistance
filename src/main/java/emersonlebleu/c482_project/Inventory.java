@@ -66,13 +66,13 @@ public class Inventory {
      * @param productName a string to search based on
      * @return a sublist of products that match the string */
     public static ObservableList<Product> lookupProduct(String productName){
-        ObservableList<Product> subListProduct = FXCollections.observableArrayList();
+        ObservableList<Product> subListProducts = FXCollections.observableArrayList();
         for (Product product: allProducts){
             if (product.getName().contains(productName)){ //change
-                subListProduct.add(product);
+                subListProducts.add(product);
             }
         }
-        return subListProduct;
+        return subListProducts;
     }
 
     /** Updates a part at a particular index.
