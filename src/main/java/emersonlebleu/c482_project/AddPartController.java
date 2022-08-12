@@ -130,7 +130,7 @@ public class AddPartController implements Initializable {
             pass = false;
         }
 
-        if (set_fields(newPart) && (pass == true)) {
+        if (set_fields(newPart) && (pass)) {
             Inventory.addPart(newPart);
         } else { return; }
     }
