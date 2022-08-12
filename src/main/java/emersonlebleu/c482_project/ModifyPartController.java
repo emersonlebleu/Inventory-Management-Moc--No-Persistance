@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -125,6 +126,43 @@ public class ModifyPartController implements Initializable {
         }
         return pass;
     }
+
+    /** Validates the min max inventory relationship for a product.
+     * @param part a product to be validated
+     * @return a boolean for validation of success */
+    private boolean valMinMaxInv(Part part){
+        boolean pass = true;
+        boolean minVer = true;
+        boolean invVer = true;
+
+        if (part.getMin() >= part.getMax()){
+            minVer = false;
+            pass = false;
+        }
+
+        if (part.getStock() >= part.getMax() || part.getStock() <= part.getMin()){
+            pass = false;
+            invVer = false;
+        }
+
+        if (minVer == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min/Inventory/Max Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("The Min must be less than Max.");
+            alert.showAndWait();
+        } else if (invVer == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min/Inventory/Max Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Inventory must be between Min and Max.");
+            alert.showAndWait();
+        }
+        return pass;
+    }
+
     /** Updates the selected part with fields from view as data. Stores the appropriate information into the fields of selectedPart depending on which type of part it is and which type of part is now selected, loads the main view. */
     public void on_save(ActionEvent actionEvent) throws IOException {
         boolean pass = true;
@@ -134,7 +172,7 @@ public class ModifyPartController implements Initializable {
             String newCompany = toggleField.getText();
             ((Outsourced) selectedPart).setCompanyName(newCompany);
 
-            if (set_fields(selectedPart)) {} else { return; }
+            if (set_fields(selectedPart) && valMinMaxInv(selectedPart)) {} else { return; }
 
         } else if (selectedPart instanceof InHouse && add_part_toggle.getSelectedToggle() == in_house_radio) {
             set_fields(selectedPart);
@@ -149,7 +187,7 @@ public class ModifyPartController implements Initializable {
                 pass = false;
             }
 
-            if (set_fields(selectedPart) && (pass)) {} else { return; }
+            if (set_fields(selectedPart) && (pass) && valMinMaxInv(selectedPart)) {} else { return; }
 
         } else if (selectedPart instanceof InHouse && add_part_toggle.getSelectedToggle() == outsourced_radio) {
             Outsourced changedPart = new Outsourced(0, "none", 0.00, 0, 0, 0, "none");
@@ -157,7 +195,7 @@ public class ModifyPartController implements Initializable {
             String newCompany = toggleField.getText();
             changedPart.setCompanyName(newCompany);
 
-            if (set_fields(changedPart)) {
+            if (set_fields(changedPart) && valMinMaxInv(changedPart)) {
                 Inventory.deletePart(selectedPart);
                 Inventory.addPart(changedPart);
             } else { return; }
@@ -176,7 +214,7 @@ public class ModifyPartController implements Initializable {
                 pass = false;
             }
 
-            if (set_fields(changedPart) && (pass)) {
+            if (set_fields(changedPart) && (pass) && valMinMaxInv(changedPart)) {
                 Inventory.addPart(changedPart);
                 Inventory.deletePart(selectedPart);
             } else { return; }
