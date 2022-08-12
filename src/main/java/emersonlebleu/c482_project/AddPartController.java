@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,6 +96,43 @@ public class AddPartController implements Initializable {
         }
         return pass;
     }
+
+    /** Validates the min max inventory relationship for a product.
+     * @param part a product to be validated
+     * @return a boolean for validation of success */
+    private boolean valMinMaxInv(Part part){
+        boolean pass = true;
+        boolean minVer = true;
+        boolean invVer = true;
+
+        if (part.getMin() >= part.getMax()){
+            minVer = false;
+            pass = false;
+        }
+
+        if (part.getStock() >= part.getMax() || part.getStock() <= part.getMin()){
+            pass = false;
+            invVer = false;
+        }
+
+        if (minVer == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min/Inventory/Max Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("The Min must be less than Max.");
+            alert.showAndWait();
+        } else if (invVer == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min/Inventory/Max Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Inventory must be between Min and Max.");
+            alert.showAndWait();
+        }
+        return pass;
+    }
+
     /** Sets text of the toggle field to machine ID. */
     public void on_in_house(ActionEvent actionEvent) {
         machine_company.setText("Machine ID");
@@ -113,7 +151,7 @@ public class AddPartController implements Initializable {
         String newCompany = toggleField.getText();
         newPart.setCompanyName(newCompany);
 
-        if (set_fields(newPart)) {
+        if (set_fields(newPart) && valMinMaxInv(newPart)) {
             Inventory.addPart(newPart);
         } else { return; }
     } else if (add_part_toggle.getSelectedToggle() == in_house_radio) {
@@ -130,7 +168,7 @@ public class AddPartController implements Initializable {
             pass = false;
         }
 
-        if (set_fields(newPart) && (pass)) {
+        if (set_fields(newPart) && (pass) && valMinMaxInv(newPart)) {
             Inventory.addPart(newPart);
         } else { return; }
     }
