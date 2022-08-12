@@ -63,19 +63,62 @@ public class AddProductController implements Initializable {
     }
 
     /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed.
-     * @param product a product to be set */
-    public void set_fields(Product product){
-        product.setId(MainController.generate());
-        String newName = nameField.getText();
-        product.setName(newName);
-        int newInv = Integer.parseInt(invField.getText());
-        product.setStock(newInv);
-        Double newPrice = Double.parseDouble(priceField.getText());
-        product.setPrice(newPrice);
-        int newMax = Integer.parseInt(maxField.getText());
-        product.setMax(newMax);
-        int newMin = Integer.parseInt(minField.getText());
-        product.setMin(newMin);
+     * @param product a product to be set
+     * @return boolean if all successful then true if not false */
+    public boolean set_fields(Product product){
+        boolean pass = true;
+        product.setId(MainController.currId);
+
+        try {
+            String newName = nameField.getText();
+            nameField.setStyle("-fx-text-fill: black;");
+            product.setName(newName);
+        } catch (Exception e) {
+            nameField.setText("Expected: String");
+            nameField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newInv = Integer.parseInt(invField.getText());
+            invField.setStyle("-fx-text-fill: black;");
+            product.setStock(newInv);
+        } catch (Exception e) {
+            invField.setText("Expected: Integer");
+            invField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            Double newPrice = Double.parseDouble(priceField.getText());
+            priceField.setStyle("-fx-text-fill: black;");
+            product.setPrice(newPrice);
+        } catch (Exception e) {
+            priceField.setText("Expected: Double");
+            priceField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newMax = Integer.parseInt(maxField.getText());
+            maxField.setStyle("-fx-text-fill: black;");
+            product.setMax(newMax);
+        } catch (Exception e) {
+            maxField.setText("Expected: Integer");
+            maxField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newMin = Integer.parseInt(minField.getText());
+            minField.setStyle("-fx-text-fill: black;");
+            product.setMin(newMin);
+        } catch (Exception e) {
+            minField.setText("Expected: Integer");
+            minField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+        return pass;
     }
 
      /** Selected part variable. Used to store the selected part from the allParts and thisPart tables. */
@@ -86,20 +129,22 @@ public class AddProductController implements Initializable {
 
         Product newProduct = new Product( 0, "none", 0.00, 0, 0, 0);
         set_fields(newProduct);
-        for (Part part: thisProductParts) {
-            newProduct.addAssociatedPart(part);
+
+        if (set_fields(newProduct)) {
+            for (Part part: thisProductParts) {
+                newProduct.addAssociatedPart(part);
+            }
+            Inventory.addProduct(newProduct);
+
+            Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root, 895.0 , 395.0);
+            stage.setTitle("IMS: Main");
+            stage.setScene(scene);
+
+            stage.show();
         }
-
-        Inventory.addProduct(newProduct);
-
-        Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-
-        Scene scene = new Scene(root, 895.0 , 395.0);
-        stage.setTitle("IMS: Main");
-        stage.setScene(scene);
-
-        stage.show();
     }
 
     /** Returns to the main screen. */
