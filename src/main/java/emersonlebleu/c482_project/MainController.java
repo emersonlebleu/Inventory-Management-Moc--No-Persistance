@@ -127,10 +127,21 @@ public class MainController implements Initializable {
 
             stage.show();
     }
+
     /** Loads the modify_part_view. Stores the current selected part in a variable for use in modify view and loads the modify_part_view. */
     public void to_modify_part(ActionEvent actionEvent) throws IOException{
         selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
-        try {
+
+        if (selectedPart == null) {
+            //----------------No Selection Error--------------------//
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Please make a selection.");
+
+            alert.showAndWait();
+        } else {
             Parent root = FXMLLoader.load(getClass().getResource("modify_part_view.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
@@ -139,10 +150,9 @@ public class MainController implements Initializable {
             stage.setScene(scene);
 
             stage.show();
-        } catch (Exception e) {
-            System.out.println("Error: Sorry, No Part Selected. Please select a part and try again.");
         }
     }
+
     /** Loads the add_product_view. */
     public void to_add_product(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("add_product_view.fxml"));
@@ -154,11 +164,21 @@ public class MainController implements Initializable {
 
         stage.show();
     }
+
     /** Opens the modify_product view. Stores the current selected product in a variable for use in modify view and loads the modify_product_view. */
     public void to_modify_product(ActionEvent actionEvent) throws IOException{
         selectedProduct = (Product) productsTable.getSelectionModel().getSelectedItem();
 
-        try {
+        if (selectedProduct == null) {
+            //----------------No Selection Error--------------------//
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Please make a selection.");
+
+            alert.showAndWait();
+        } else {
             Parent root = FXMLLoader.load(getClass().getResource("modify_product_view.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
@@ -167,11 +187,9 @@ public class MainController implements Initializable {
             stage.setScene(scene);
 
             stage.show();
-        } catch (Exception e) {
-            System.out.println("Error: Sorry, No Product Selected. Please select a product and try again.");
         }
-
     }
+
     /** Deletes a product from the inventory if conditions are satisfied. If product has an associated part an error dialog will populate.
       Has confirmation box, if confirmed product will be deleted. */
     public void delete_product(ActionEvent actionEvent) {
