@@ -157,7 +157,7 @@ public class ModifyProductController implements Initializable {
         }
     }
 
-    /** Returns to the main screen. */
+    /** Returns to the main screen. Reverts the associated parts and loads the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
         for (Part part: partsAdded) {
             selectedProduct.deleteAssociatedPart(part);
