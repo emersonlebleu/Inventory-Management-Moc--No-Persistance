@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -115,29 +116,52 @@ public class AddProductController implements Initializable {
     public void add_part(ActionEvent actionEvent) {
         selectedPart = (Part) allPartsTable.getSelectionModel().getSelectedItem();
 
-        thisProductParts.add(selectedPart);
-        thisPartTable.setItems(thisProductParts);
+        if (selectedPart == null) {
+            //----------------No Selection Error--------------------//
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Please make a selection.");
+
+            alert.showAndWait();
+        } else {
+            thisProductParts.add(selectedPart);
+            thisPartTable.setItems(thisProductParts);
+        }
     }
 
     /** Removes selected part from product after confirmation. */
     public void remove_part(ActionEvent actionEvent) {
         selectedPart = (Part) thisPartTable.getSelectionModel().getSelectedItem();
-        //--------------Remove Confirmation Box----------------------//
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Remove Confirmation");
-        alert.setHeaderText(null);
-        alert.setContentText("Are you sure you'd like to remove this part?");
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
 
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeYes) {
-            thisProductParts.remove(selectedPart);
+        if (selectedPart == null) {
+            //----------------No Selection Error--------------------//
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Please make a selection.");
+
+            alert.showAndWait();
         } else {
-            //Do nothing
+            //--------------Remove Confirmation Box----------------------//
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Remove Confirmation");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you'd like to remove this part?");
+            ButtonType buttonTypeYes = new ButtonType("Yes");
+            ButtonType buttonTypeNo = new ButtonType("No");
+
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeYes) {
+                thisProductParts.remove(selectedPart);
+            } else {
+                //Do nothing
+            }
+            thisPartTable.setItems(thisProductParts);
         }
-        thisPartTable.setItems(thisProductParts);
     }
 
      /** Searches allParts for matching parts. Searches allParts for parts matching either a substring or ID, stores the matches in a sublist, and sets the table items to this sublist. */
