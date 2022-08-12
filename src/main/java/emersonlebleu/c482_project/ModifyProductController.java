@@ -46,6 +46,12 @@ public class ModifyProductController implements Initializable {
     /** Observable list of parts. Used to store the current product's list of parts. */
     private ObservableList<Part> thisProductParts = FXCollections.observableArrayList();
 
+    /** List of parts added. Used to revert product if modify is canceled. */
+    private ObservableList<Part> partsAdded = FXCollections.observableArrayList();
+
+    /** List of parts removed. Used to revert product if modify is canceled. */
+    private ObservableList<Part> partsRemoved = FXCollections.observableArrayList();
+
     /** Sets up the fields and tables with appropriate information. Stores the product selected on main view into variable for this view populates the fields, and the tables with information. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -107,6 +113,13 @@ public class ModifyProductController implements Initializable {
 
     /** Returns to the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
+        for (Part part: partsAdded) {
+            selectedProduct.deleteAssociatedPart(part);
+        }
+        for (Part part: partsRemoved) {
+            selectedProduct.addAssociatedPart(part);
+        }
+
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
@@ -122,6 +135,7 @@ public class ModifyProductController implements Initializable {
         selectedPart = (Part) allPartsTable.getSelectionModel().getSelectedItem();
 
         selectedProduct.addAssociatedPart(selectedPart);
+        partsAdded.add(selectedPart);
         thisPartTable.setItems(thisProductParts);
     }
 
@@ -132,7 +146,7 @@ public class ModifyProductController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Remove Confirmation");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you'd like to remove this part you will be removing permanently (you can always add it back though)?");
+        alert.setContentText("Are you sure you'd like to remove this part?");
         ButtonType buttonTypeYes = new ButtonType("Yes");
         ButtonType buttonTypeNo = new ButtonType("No");
 
@@ -140,6 +154,7 @@ public class ModifyProductController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes) {
             selectedProduct.deleteAssociatedPart(selectedPart);
+            partsRemoved.add(selectedPart);
         } else {
             //Do nothing
         }
