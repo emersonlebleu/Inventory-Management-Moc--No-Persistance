@@ -44,6 +44,8 @@ public class AddProductController implements Initializable {
     /** Sets up tables with appropriate information. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        MainController.generate();
+        idField.setText(String.valueOf(MainController.currId));
 
         allPartsTable.setItems(Inventory.getAllParts());
 
@@ -102,6 +104,8 @@ public class AddProductController implements Initializable {
 
     /** Returns to the main screen. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
+        MainController.currId -= 1;
+
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
