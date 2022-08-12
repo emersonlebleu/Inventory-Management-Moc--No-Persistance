@@ -3,8 +3,8 @@ package emersonlebleu.c482_project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/** Inventory class. Holds a list of products and parts for the application. */
-/** @author Emerson Lebleu */
+/** Inventory class. Holds a list of products and parts for the application.
+ * @author Emerson Lebleu */
 public class Inventory {
 
     /** A static list of parts. */

@@ -1,9 +1,6 @@
 package emersonlebleu.c482_project;
 /**
-* Supplied class Part.java 
- */
-
-/**
+ * Supplied class Part.java
  *
  * @author Emerson Lebleu, pre-provided
  */

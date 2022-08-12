@@ -1,7 +1,7 @@
 package emersonlebleu.c482_project;
 /** Outsourced class extends the Part class. This class extends the part class by adding companyName
-  and a getter and setter method for this additional variable. */
-/** @author Emerson Lebleu */
+ * and a getter and setter method for this additional variable.
+ * @author Emerson Lebleu */
 public class Outsourced extends Part{
     private String companyName;
 
