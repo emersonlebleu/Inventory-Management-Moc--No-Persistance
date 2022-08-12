@@ -241,7 +241,16 @@ public class ModifyProductController implements Initializable {
             if (subList.size() == 0) {
                 try {
                     subList.add(Inventory.lookupPart(Integer.parseInt(searchCriteria)));
-                } catch (Exception e) { subList = FXCollections.observableArrayList(); }
+                } catch (Exception e) {
+                    //----------------No Selection Error--------------------//
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("No Parts Found:");
+                    alert.setHeaderText(null);
+                    alert.initStyle(StageStyle.UTILITY);
+                    alert.setContentText("Sorry no matching parts were found.");
+
+                    alert.showAndWait();
+                }
             }
         } else {
             subList = Inventory.getAllParts();
