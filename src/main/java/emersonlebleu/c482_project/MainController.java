@@ -37,7 +37,7 @@ public class MainController implements Initializable {
     private static boolean fisrtLoad = true;
 
     /** Variable that will hold the ongoing "new" id. */
-    static int currId = 0;
+    public static int currId = 0;
 
     /** This method is used to generate unique ids.
      It uses the static variable currId and increments for the life of the program.

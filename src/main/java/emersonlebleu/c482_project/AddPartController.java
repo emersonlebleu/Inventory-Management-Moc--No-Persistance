@@ -30,24 +30,68 @@ public class AddPartController implements Initializable {
     public Button save_btn;
     public Button cancel_btn;
 
-    /** Initializer for add part, no additional functionality in this case. */
+    /** Initializer for add part allows user to see ID that will be generated. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        MainController.generate();
+        idField.setText(String.valueOf(MainController.currId));
     }
 
-    /** Sets the fields of a product. This assures that they are the correct type does the proper casting where needed. */
-    public void set_fields(Part part){
-        part.setId(MainController.generate());
-        String newName = nameField.getText();
-        part.setName(newName);
-        int newInv = Integer.parseInt(invField.getText());
-        part.setStock(newInv);
-        Double newPrice = Double.parseDouble(priceField.getText());
-        part.setPrice(newPrice);
-        int newMax = Integer.parseInt(maxField.getText());
-        part.setMax(newMax);
-        int newMin = Integer.parseInt(minField.getText());
-        part.setMin(newMin);
+    /** Sets the fields of a part. This assures that they are the correct type does the proper casting where needed. */
+    public boolean set_fields(Part part){
+        boolean pass = true;
+        part.setId(MainController.currId);
+
+        try {
+            String newName = nameField.getText();
+            nameField.setStyle("-fx-text-fill: black;");
+            part.setName(newName);
+        } catch (Exception e) {
+            nameField.setText("Expected: String");
+            nameField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newInv = Integer.parseInt(invField.getText());
+            invField.setStyle("-fx-text-fill: black;");
+            part.setStock(newInv);
+        } catch (Exception e) {
+            invField.setText("Expected: Integer");
+            invField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            Double newPrice = Double.parseDouble(priceField.getText());
+            priceField.setStyle("-fx-text-fill: black;");
+            part.setPrice(newPrice);
+        } catch (Exception e) {
+            priceField.setText("Expected: Double");
+            priceField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newMax = Integer.parseInt(maxField.getText());
+            maxField.setStyle("-fx-text-fill: black;");
+            part.setMax(newMax);
+        } catch (Exception e) {
+            maxField.setText("Expected: Integer");
+            maxField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        try {
+            int newMin = Integer.parseInt(minField.getText());
+            minField.setStyle("-fx-text-fill: black;");
+            part.setMin(newMin);
+        } catch (Exception e) {
+            minField.setText("Expected: Integer");
+            minField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+        return pass;
     }
     /** Sets text of the toggle field to machine ID. */
     public void on_in_house(ActionEvent actionEvent) {
@@ -60,18 +104,33 @@ public class AddPartController implements Initializable {
 
     /** Adds a new part with fields from view as data. Creates a new part, stores the appropriate information into the fields, loads the main view. */
     public void on_save(ActionEvent actionEvent) throws IOException {
+        boolean pass = true;
     if (add_part_toggle.getSelectedToggle() == outsourced_radio) {
         Outsourced newPart = new Outsourced(0, "none", 0.00, 0, 0, 0, "none");
         set_fields(newPart);
         String newCompany = toggleField.getText();
         newPart.setCompanyName(newCompany);
-        Inventory.addPart(newPart);
+
+        if (set_fields(newPart)) {
+            Inventory.addPart(newPart);
+        } else { return; }
     } else if (add_part_toggle.getSelectedToggle() == in_house_radio) {
         InHouse newPart = new InHouse(0, "none", 0.00, 0, 0, 0, 0000);
         set_fields(newPart);
-        int newMachineId = Integer.parseInt(toggleField.getText());
-        newPart.setMachineid(newMachineId);
-        Inventory.addPart(newPart);
+
+        try {
+            int newMachineId = Integer.parseInt(toggleField.getText());
+            toggleField.setStyle("-fx-text-fill: black;");
+            newPart.setMachineid(newMachineId);
+        } catch (Exception e) {
+            toggleField.setText("Expected: Integer");
+            toggleField.setStyle("-fx-text-fill: red;");
+            pass = false;
+        }
+
+        if (set_fields(newPart) && (pass == true)) {
+            Inventory.addPart(newPart);
+        } else { return; }
     }
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -83,8 +142,10 @@ public class AddPartController implements Initializable {
         stage.show();
     }
 
-    /** Returns to the main screen. */
+    /** Returns to the main screen. Reloads main screen and resets the id counter to the previous state. */
     public void on_cancel(ActionEvent actionEvent) throws IOException {
+        MainController.currId -= 1;
+
         Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
