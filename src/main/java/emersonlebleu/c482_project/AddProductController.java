@@ -162,11 +162,11 @@ public class AddProductController implements Initializable {
 
     /** Saves a new product. Saves the information into a new product, adds product to the inventory, and loads main.
      *
-     * RUNTIME ERROR: when calling the method valMinMaxInv() I had previously attempted to call the method up top, and
-     * then use it in the "if" statement as well as a boolean variable. This ended up calling the method twice which
-     * resulted in the error box populating and needing to be dismissed two times in a row. I corrected this by removing
-     * the instance that was under "set_fields(newProduct);" and now only rely on the call that is present in the nested
-     * if statement. */
+     * RUNTIME ERROR: When calling the method valMinMaxInv() I had previously attempted to call the method up top just
+     * under the "set_fields(newProduct);" on line 174, and then use it in the "if" statement as well as a boolean variable.
+     * This ended up calling the method twice which resulted in the error box populating and needing to be dismissed
+     * two times in a row. I corrected this by removing the instance that was under "set_fields(newProduct);" and
+     * now only rely on the call that is present in the nested if statement. */
     public void on_save(ActionEvent actionEvent) throws IOException {
 
         Product newProduct = new Product( 0, "none", 0.00, 0, 0, 0);
