@@ -139,7 +139,7 @@ public class ModifyProductController implements Initializable {
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes) {
-            thisProductParts.remove(selectedPart);
+            selectedProduct.deleteAssociatedPart(selectedPart);
         } else {
             //Do nothing
         }
