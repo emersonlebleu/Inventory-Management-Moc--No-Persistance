@@ -121,6 +121,42 @@ public class AddProductController implements Initializable {
         return pass;
     }
 
+    /** Validates the min max inventory relationship for a product.
+     * @param product a product to be validated
+     * @return a boolean for validation of success */
+    private boolean valMinMaxInv(Product product){
+        boolean pass = true;
+        boolean minVer = true;
+        boolean invVer = true;
+
+        if (product.getMin() >= product.getMax()){
+            minVer = false;
+            pass = false;
+        }
+
+        if (product.getStock() >= product.getMax() || product.getStock() <= product.getMin()){
+            pass = false;
+            invVer = false;
+        }
+
+        if (minVer == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min/Inventory/Max Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("The Min must be less than Max.");
+            alert.showAndWait();
+        } else if (invVer == false) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min/Inventory/Max Error");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Inventory must be between Min and Max.");
+            alert.showAndWait();
+        }
+        return pass;
+    }
+
      /** Selected part variable. Used to store the selected part from the allParts and thisPart tables. */
     private static Part selectedPart = null;
 
@@ -131,19 +167,21 @@ public class AddProductController implements Initializable {
         set_fields(newProduct);
 
         if (set_fields(newProduct)) {
-            for (Part part: thisProductParts) {
-                newProduct.addAssociatedPart(part);
+            if (valMinMaxInv(newProduct)){
+                for (Part part: thisProductParts) {
+                    newProduct.addAssociatedPart(part);
+                }
+                Inventory.addProduct(newProduct);
+
+                Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
+                Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+
+                Scene scene = new Scene(root, 895.0 , 395.0);
+                stage.setTitle("IMS: Main");
+                stage.setScene(scene);
+
+                stage.show();
             }
-            Inventory.addProduct(newProduct);
-
-            Parent root = FXMLLoader.load(getClass().getResource("main_view.fxml"));
-            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-
-            Scene scene = new Scene(root, 895.0 , 395.0);
-            stage.setTitle("IMS: Main");
-            stage.setScene(scene);
-
-            stage.show();
         }
     }
 
