@@ -177,7 +177,14 @@ public class MainController implements Initializable {
     public void delete_product(ActionEvent actionEvent) {
         Product selectedProduct = (Product) productsTable.getSelectionModel().getSelectedItem();
         if (selectedProduct == null) {
-            return;
+            //----------------No Selection Error--------------------//
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Please make a selection.");
+
+            alert.showAndWait();
         } else if (selectedProduct.getAllAssociatedParts().size() != 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Associated Part Delete Error");
@@ -208,22 +215,30 @@ public class MainController implements Initializable {
     public void delete_part(ActionEvent actionEvent) {
         Part selectedPart = (Part) partsTable.getSelectionModel().getSelectedItem();
         if (selectedPart == null) {
-            return;
-        }
-        //--------------Delete Confirmation Box----------------------//
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Confirmation");
-        alert.setHeaderText(null);
-        alert.setContentText("Are you sure you'd like to delete this part?");
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
+            //----------------No Selection Error--------------------//
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setContentText("Please make a selection.");
 
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeYes) {
-            Inventory.deletePart(selectedPart);
+            alert.showAndWait();
         } else {
-            //Do nothing
+            //--------------Delete Confirmation Box----------------------//
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Confirmation");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you'd like to delete this part?");
+            ButtonType buttonTypeYes = new ButtonType("Yes");
+            ButtonType buttonTypeNo = new ButtonType("No");
+
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeYes) {
+                Inventory.deletePart(selectedPart);
+            } else {
+                //Do nothing
+            }
         }
     }
     /** Searches allParts for matching parts. Searches allParts for parts matching either a substring or ID, stores the matches in a sublist, and sets the table items to this sublist. */
