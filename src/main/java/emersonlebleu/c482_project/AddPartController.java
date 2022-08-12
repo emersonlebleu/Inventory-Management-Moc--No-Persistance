@@ -30,14 +30,16 @@ public class AddPartController implements Initializable {
     public Button save_btn;
     public Button cancel_btn;
 
-    /** Initializer for add part allows user to see ID that will be generated. */
+    /** Initializer for add part allows user to see ID generated. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MainController.generate();
         idField.setText(String.valueOf(MainController.currId));
     }
 
-    /** Sets the fields of a part. This assures that they are the correct type does the proper casting where needed. */
+    /** Sets the fields of a part. This assures that they are the correct type does the proper casting where needed or displays error.
+     * @param part is a part to set
+     * @return boolean if all successful then true if not false */
     public boolean set_fields(Part part){
         boolean pass = true;
         part.setId(MainController.currId);
@@ -102,7 +104,7 @@ public class AddPartController implements Initializable {
         machine_company.setText("Company Name");
     }
 
-    /** Adds a new part with fields from view as data. Creates a new part, stores the appropriate information into the fields, loads the main view. */
+    /** Adds a new part with fields from view as data. Creates a new part, stores the appropriate information into the fields, loads the main view, displays messages if incorrect input is given. */
     public void on_save(ActionEvent actionEvent) throws IOException {
         boolean pass = true;
     if (add_part_toggle.getSelectedToggle() == outsourced_radio) {
